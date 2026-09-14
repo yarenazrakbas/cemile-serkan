@@ -623,6 +623,12 @@ body.envelope-locked {
   margin-bottom: 1.5rem;
 }
 
+.countdown-block--nikah {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
 .countdown {
   display: flex;
   align-items: center;

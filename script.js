@@ -2,16 +2,18 @@
   'use strict';
 
   // ===== Merkezi etkinlik config =====
-  const engagementEvent = {
+  const dugunEvent = {
     title: 'Cemile & Serkan Düğün',
-    description: 'Düğünümüze Hoşgeldiniz — Cemile & Serkan',
-    location: 'Reisoğlu Restaurant, Güneşler Merkez Mah. 5052. Sk. No:15, Adapazarı/Sakarya',
-    start: '2026-09-18T19:00:00+03:00',
-    end: '2026-09-18T23:00:00+03:00',
-    timezone: 'Europe/Istanbul'
+    start: '2026-09-18T19:00:00+03:00'
   };
 
-  const EVENT_DATE = new Date(engagementEvent.start);
+  const nikahEvent = {
+    title: 'Cemile & Serkan Nikah',
+    start: '2026-09-20T17:30:00+03:00'
+  };
+
+  const DUGUN_DATE = new Date(dugunEvent.start);
+  const NIKAH_DATE = new Date(nikahEvent.start);
 
   // ===== Envelope Open =====
   const envelopeScreen = document.getElementById('envelope-screen');
@@ -70,29 +72,38 @@
     countdownInterval = setInterval(updateCountdown, 1000);
   }
 
-  function updateCountdown() {
-    const now = new Date();
-    const diff = EVENT_DATE - now;
-
+  function getParts(target, now) {
+    const diff = target - now;
     if (diff <= 0) {
-      setCountdownValues(0, 0, 0, 0);
-      clearInterval(countdownInterval);
-      return;
+      return { days: 0, hours: 0, minutes: 0, seconds: 0, done: true };
     }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    setCountdownValues(days, hours, minutes, seconds);
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+      done: false
+    };
   }
 
-  function setCountdownValues(days, hours, minutes, seconds) {
-    document.getElementById('days').textContent = pad(days);
-    document.getElementById('hours').textContent = pad(hours);
-    document.getElementById('minutes').textContent = pad(minutes);
-    document.getElementById('seconds').textContent = pad(seconds);
+  function updateCountdown() {
+    const now = new Date();
+    const dugun = getParts(DUGUN_DATE, now);
+    const nikah = getParts(NIKAH_DATE, now);
+
+    setCountdownValues('days', 'hours', 'minutes', 'seconds', dugun);
+    setCountdownValues('nikah-days', 'nikah-hours', 'nikah-minutes', 'nikah-seconds', nikah);
+
+    if (dugun.done && nikah.done) {
+      clearInterval(countdownInterval);
+    }
+  }
+
+  function setCountdownValues(daysId, hoursId, minutesId, secondsId, parts) {
+    document.getElementById(daysId).textContent = pad(parts.days);
+    document.getElementById(hoursId).textContent = pad(parts.hours);
+    document.getElementById(minutesId).textContent = pad(parts.minutes);
+    document.getElementById(secondsId).textContent = pad(parts.seconds);
   }
 
   function pad(n) {
