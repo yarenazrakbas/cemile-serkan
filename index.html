@@ -16,8 +16,22 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <link rel="stylesheet" href="styles.css?v=20260914-nomusic">
+  <link rel="stylesheet" href="styles.css?v=20260914-nomusic2">
   <style>
+    /* Eski onbellekte kalan muzik butonunu gizle */
+    audio,
+    #bg-music,
+    #music-toggle,
+    .music-toggle {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+    }
     /* Kritik davetiye kartı — eski CSS önbelleğine karşı */
     .invitation-card,
     .env-letter-paper {
@@ -353,6 +367,31 @@
     </footer>
   </div>
 
-  <script src="script.js?v=20260914-nomusic"></script>
+  <script>
+  (function () {
+    // Eski onbellek kalintilarini temizle — muzik asla olmamali
+    function stripMusic() {
+      document.querySelectorAll('audio, #bg-music, #music-toggle, .music-toggle').forEach(function (el) {
+        try {
+          if (el.pause) el.pause();
+          if (el.removeAttribute) {
+            el.removeAttribute('src');
+            el.removeAttribute('autoplay');
+          }
+          if (el.load) el.load();
+        } catch (e) {}
+        if (el.parentNode) el.parentNode.removeChild(el);
+      });
+    }
+    stripMusic();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', stripMusic);
+    }
+    window.setTimeout(stripMusic, 0);
+    window.setTimeout(stripMusic, 500);
+    window.setTimeout(stripMusic, 1500);
+  })();
+  </script>
+  <script src="script.js?v=20260914-nomusic2"></script>
 </body>
 </html>
