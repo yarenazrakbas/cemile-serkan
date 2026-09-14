@@ -13,114 +13,12 @@
 
   const EVENT_DATE = new Date(engagementEvent.start);
 
-  // ===== Background Music (Android / iOS uyumlu) =====
-  const bgMusic = document.getElementById('bg-music');
-  const musicToggle = document.getElementById('music-toggle');
-  let musicToggleLock = false;
-  let userMuted = false;
-  let envelopeOpened = false;
-  let musicUnlocked = false;
-
-  function isMusicPlaying() {
-    return !!(bgMusic && !bgMusic.paused && !bgMusic.ended);
-  }
-
-  function syncMusicUI() {
-    if (!musicToggle || !bgMusic) return;
-
-    var playing = isMusicPlaying();
-    musicToggle.querySelector('.icon-on').classList.toggle('hidden', !playing);
-    musicToggle.querySelector('.icon-off').classList.toggle('hidden', playing);
-    musicToggle.setAttribute('aria-label', playing ? 'Müziği kapat' : 'Müziği aç');
-    musicToggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
-    musicToggle.classList.toggle('is-muted', !playing);
-  }
-
-  function stopMusic() {
-    if (!bgMusic) return;
-    bgMusic.pause();
-    syncMusicUI();
-  }
-
-  // play() kullanıcı dokunuşu içinde senkron çağrılmalı
-  function unlockAndStartMusic() {
-    if (!bgMusic || userMuted) return;
-
-    if (window.__ybMusicBooted && !bgMusic.paused) {
-      syncMusicUI();
-      return;
-    }
-
-    var targetVolume = 0.45;
-
-    try {
-      bgMusic.muted = false;
-
-      // Android / iOS: önce çok düşük sesle başlat, sonra aç
-      bgMusic.volume = 0.001;
-      bgMusic.play();
-      bgMusic.volume = targetVolume;
-
-      if (bgMusic.paused) {
-        bgMusic.muted = true;
-        bgMusic.play();
-        bgMusic.muted = false;
-        bgMusic.volume = targetVolume;
-      }
-
-      if (bgMusic.paused) {
-        bgMusic.volume = targetVolume;
-        bgMusic.play();
-      }
-
-      musicUnlocked = true;
-      window.__ybMusicBooted = true;
-    } catch (err) {
-      /* Tarayıcı sesi engelledi */
-    }
-
-    syncMusicUI();
-  }
-
-  function toggleMusic() {
-    if (!bgMusic || musicToggleLock) return;
-
-    musicToggleLock = true;
-    window.setTimeout(function () {
-      musicToggleLock = false;
-    }, 400);
-
-    if (isMusicPlaying()) {
-      userMuted = true;
-      stopMusic();
-      return;
-    }
-
-    userMuted = false;
-    unlockAndStartMusic();
-  }
-
-  if (bgMusic) {
-    bgMusic.volume = 0.45;
-    bgMusic.addEventListener('play', syncMusicUI);
-    bgMusic.addEventListener('pause', syncMusicUI);
-    bgMusic.addEventListener('ended', syncMusicUI);
-  }
-
-  if (musicToggle) {
-    musicToggle.addEventListener('click', function (event) {
-      event.stopPropagation();
-      toggleMusic();
-    });
-
-    syncMusicUI();
-  }
-
   // ===== Envelope Open =====
   const envelopeScreen = document.getElementById('envelope-screen');
   const mainContent = document.getElementById('main-content');
   const openBtn = document.getElementById('open-envelope');
   const envelope = document.querySelector('.envelope');
+  let envelopeOpened = false;
 
   document.body.classList.add('envelope-locked');
 
@@ -130,10 +28,6 @@
     openBtn.disabled = true;
 
     envelope.classList.add('opened');
-
-    if (musicToggle) {
-      musicToggle.classList.add('visible');
-    }
 
     setTimeout(function () {
       mainContent.classList.remove('hidden');
@@ -153,8 +47,6 @@
 
   function handleIntroTap() {
     if (envelopeOpened) return;
-
-    unlockAndStartMusic();
     openEnvelope();
   }
 
