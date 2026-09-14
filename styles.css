@@ -244,7 +244,7 @@ body.envelope-locked {
   width: auto;
   max-width: 100%;
   font-family: 'Cinzel', Georgia, serif;
-  font-size: 1.85rem;
+  font-size: 1.55rem;
   font-weight: 400;
   color: var(--text-dark);
   line-height: 1.1;
@@ -301,7 +301,7 @@ body.envelope-locked {
 
 @media (min-width: 400px) {
   .invitation-names {
-    font-size: 2.15rem;
+    font-size: 1.85rem;
   }
 
   .invitation-welcome {
@@ -522,10 +522,67 @@ body.envelope-locked {
 .location-section,
 .timeline-section,
 .faq-section,
-.rsvp-section {
+.rsvp-section,
+.family-section {
   background: var(--brown);
   padding: 2.5rem 1.5rem;
   text-align: center;
+}
+
+/* ===== Family ===== */
+.family-columns {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 400px;
+  margin: 1.25rem auto 0;
+}
+
+.family-col {
+  text-align: center;
+}
+
+.family-names {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.family-note {
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+  margin-top: 0.45rem;
+  text-transform: uppercase;
+}
+
+.family-ornament {
+  width: 36px;
+  height: 36px;
+  color: rgba(255, 255, 255, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.family-ornament svg {
+  width: 28px;
+  height: 28px;
+}
+
+.venue-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  padding-bottom: 0.2rem;
 }
 
 .section-title {
@@ -1125,6 +1182,7 @@ body.envelope-locked {
   .timeline-section,
   .faq-section,
   .rsvp-section,
+  .family-section,
   .footer {
     background-color: #3d2b1f !important;
     color: #ffffff !important;

@@ -3,11 +3,11 @@
 
   // ===== Merkezi etkinlik config =====
   const engagementEvent = {
-    title: 'Yaren & Berke Nişan Töreni',
-    description: 'Nişanımıza Hoşgeldiniz — Yaren & Berke',
-    location: "LUN'ADA DAVET EVİ, Bağlar Mah. Yavuz Selim Cad. No:106/1B, Erenler/Sakarya",
-    start: '2026-09-26T19:00:00+03:00',
-    end: '2026-09-26T22:00:00+03:00',
+    title: 'Cemile & Serkan Düğün',
+    description: 'Düğünümüze Hoşgeldiniz — Cemile & Serkan',
+    location: 'Reisoğlu Restaurant, Güneşler Merkez Mah. 5052. Sk. No:15, Adapazarı/Sakarya',
+    start: '2026-09-18T19:00:00+03:00',
+    end: '2026-09-18T23:00:00+03:00',
     timezone: 'Europe/Istanbul'
   };
 
